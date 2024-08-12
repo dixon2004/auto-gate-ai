@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/scripts.js') }}" defer></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('auth.login') }}" class="active">LOGIN</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="main-content">
+        <h1 class="main-heading">Login</h1>
+
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        <div id="flash-messages" class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <form class="form-container" action="{{ url_for('auth.login') }}" method="post">
+            <div class="form-group">
+                <label for="phone_number">Phone Number (e.g. 60123456789):</label>
+                <input type="text" id="phone_number" name="phone_number" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login">
+            </div>
+        </form>
+    </main>
+</body>
+
+</html>

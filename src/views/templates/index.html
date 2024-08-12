@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/scripts.js') }}" defer></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                {% if whitelisted %}
+                <li><a href="/history" class="active">HOME</a></li>
+                {% endif %}
+                <li><a href="/visitor">VISITOR</a></li>
+                {% if whitelisted %}
+                <li><a href="/resident">RESIDENT</a></li>
+                {% endif %}
+                <li><a href="/logout">LOGOUT</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="main-content">
+        <h1 class="main-heading">Record</h1>
+
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        <div id="flash-messages" class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Role</th>
+                    <th>Vehicle Type</th>
+                    <th>License Plate</th>
+                    <th>Enter Time</th>
+                    <th>Exit Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in record %}
+                <tr>
+                    <td>{{ r.role }}</td>
+                    <td>{{ r.vehicle_type }}</td>
+                    <td>{{ r.license_plate }}</td>
+                    <td>{{ r.enter_time }}</td>
+                    <td>{{ r.exit_time if r.exit_time else 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+
+</html>

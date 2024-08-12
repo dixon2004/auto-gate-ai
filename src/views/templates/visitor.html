@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/scripts.js') }}" defer></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                {% if whitelisted %}
+                <li><a href="/history">HOME</a></li>
+                {% endif %}
+                <li><a href="/visitor" class="active">VISITOR</a></li>
+                {% if whitelisted %}
+                <li><a href="/resident">RESIDENT</a></li>
+                {% endif %}
+                <li><a href="/logout">LOGOUT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <h1 class="main-heading">Visitor Management</h1>
+
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        <div id="flash-messages" class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <div class="tab-container">
+            <div class="tab active" data-tab="add">Add</div>
+            <div class="tab" data-tab="list">View List</div>
+        </div>
+
+        <div id="add" class="tab-content active">
+            <form class="form-container" action="/add_visitor" method="post">
+                <div class="form-group">
+                    <label for="vehicle-type">Vehicle Type:</label>
+                    <select id="vehicle-type" name="vehicle_type" required>
+                        <option value="Car">Car</option>
+                        <option value="Motor">Motor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="license_plate">License Plate:</label>
+                    <input type="text" id="license_plate" name="license_plate" required>
+                </div>
+                <div class="form-group">
+                    <label for="enter-time">Enter Time:</label>
+                    <input type="datetime-local" id="enter-time" name="enter_time" required>
+                </div>
+                <div class="form-group">
+                    <label for="exit-time">Exit Time:</label>
+                    <input type="datetime-local" id="exit-time" name="exit_time" required>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+
+        <div id="list" class="tab-content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Vehicle Type</th>
+                        <th>License Plate</th>
+                        <th>Enter Time</th>
+                        <th>Exit Time</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for v in record %}
+                    <tr>
+                        <td>{{ v.vehicle_type }}</td>
+                        <td>{{ v.license_plate }}</td>
+                        <td>{{ v.enter_time }}</td>
+                        <td>{{ v.exit_time if v.exit_time else 'N/A' }}</td>
+                        <td><button class="delete-btn">❌</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+python-dotenv
+opencv-python
+flask_limiter
+flask-login
+ultralytics
+websockets
+roboflow
+pymongo
+easyocr
+numpy
+flask
+pytz

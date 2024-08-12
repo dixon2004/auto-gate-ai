@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resident</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/scripts.js') }}" defer></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                {% if whitelisted %}
+                <li><a href="/history">HOME</a></li>
+                {% endif %}
+                <li><a href="/visitor">VISITOR</a></li>
+                {% if whitelisted %}
+                <li><a href="/resident" class="active">RESIDENT</a></li>
+                {% endif %}
+                <li><a href="/logout">LOGOUT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <h1 class="main-heading">Resident Management</h1>
+
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        <div id="flash-messages" class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <div class="tab-container">
+            <div class="tab active" data-tab="add">Add</div>
+            <div class="tab" data-tab="update">Update</div>
+            <div class="tab" data-tab="reset">Reset Password</div>
+            <div class="tab" data-tab="list">View List</div>
+        </div>
+
+        <div id="add" class="tab-content active">
+            <form class="form-container" action="/add_resident" method="post">
+                {% if role == "Founder" %}
+                <div class="form-group">
+                    <label for="group">Group:</label>
+                    <input type="text" id="group" name="group" required>
+                </div>
+                {% endif %}
+                <div class="form-group">
+                    <label for="role">Role:</label>
+                    <select id="role" name="role" required>
+                        <option value="Resident">Resident</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="phone_number">Phone Number (e.g. 60123456789):</label>
+                    <input type="text" id="phone_number" name="phone_number" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="text" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="home_address">Home Address:</label>
+                    <input type="text" id="home_address" name="home_address" required>
+                </div>
+                <div class="form-group">
+                    <label for="vehicle-type">Vehicle Type:</label>
+                    <select id="vehicle-type" name="vehicle_type" required>
+                        <option value="Car">Car</option>
+                        <option value="Motor">Motor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="license_plate">License Plate:</label>
+                    <input type="text" id="license_plate" name="license_plate" required>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+
+        <div id="update" class="tab-content">
+            <form class="form-container" action="/update_resident" method="post">
+                <div class="form-group">
+                    <label for="phone_number">Phone Number (e.g. 60123456789):</label>
+                    <input type="text" id="phone_number" name="phone_number" required>
+                </div>
+                <div class="form-group">
+                    <label for="vehicle-type">Vehicle Type:</label>
+                    <select id="vehicle-type" name="vehicle_type" required>
+                        <option value="Car">Car</option>
+                        <option value="Motor">Motor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="license_plate">License Plate:</label>
+                    <input type="text" id="license_plate" name="license_plate" required>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+
+        <div id="reset" class="tab-content">
+            <form class="form-container" action="/reset_password" method="post">
+                <div class="form-group">
+                    <label for="phone_number">Phone Number (e.g. 60123456789):</label>
+                    <input type="text" id="phone_number" name="phone_number" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Reset Password:</label>
+                    <input type="text" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Reset">
+                </div>
+            </form>
+        </div>
+
+        <div id="list" class="tab-content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Vehicle Type</th>
+                        <th>License Plate</th>
+                        <th>Phone Number</th>
+                        <th>Home Address</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in record %}
+                    <tr>
+                        <td>{{ r.role }}</td>
+                        <td>{{ r.vehicle_type }}</td>
+                        <td>{{ r.license_plate }}</td>
+                        <td>{{ r.phone_number }}</td>
+                        <td>{{ r.home_address }}</td>
+                        <td><button class="delete-btn">❌</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+
+</html>
