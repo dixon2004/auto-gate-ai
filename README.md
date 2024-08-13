@@ -16,6 +16,7 @@ In addition to its core access control functionalities, <strong>AutoGate AI</str
   - [Clone the Repository](#clone-the-repository)
   - [Set Up a Virtual Environment](#set-up-a-virtual-environment)
   - [Install Dependencies](#install-dependencies)
+  - [Optional: Enable CUDA Support](#optional-enable-cuda-support)
   - [Configure Environment Variables](#configure-environment-variables)
   - [Running the System](#running-the-system)
   - [Running the Web Interface](#running-the-web-interface)
@@ -30,7 +31,6 @@ In addition to its core access control functionalities, <strong>AutoGate AI</str
 ## Setup Instructions
 
 ### Prerequisites
-
 - **Python 3.8+**: Required to run the system.
 - **MongoDB**: Ensure MongoDB is installed and configured.
 
@@ -67,6 +67,57 @@ With the virtual environment activated, install the necessary dependencies:
 ```bash
 pip install -r requirements.txt
 ```
+
+### Optional: Enable CUDA Support
+If your system is equipped with a compatible NVIDIA GPU, you can significantly boost the performance of the AutoGate AI system by utilizing CUDA acceleration. Follow these steps to install the CUDA-enabled version of PyTorch within your virtual environment.
+
+**1. Verify GPU Compatibility**
+
+Before proceeding, ensure that your GPU is recognized and that the necessary CUDA drivers are installed:
+
+- Check GPU Status:
+
+  Run the following command to verify that your GPU is detected and view its status, including memory usage and the CUDA version:
+  ```bash
+  nvidia-smi
+  ```
+  
+  If your GPU is listed, it indicates that CUDA drivers are installed and your system is ready for CUDA-accelerated operations.
+
+**2. Generate the PyTorch Installation Command**
+
+Once you have confirmed that your GPU is compatible, follow these steps to generate the command to install the CUDA-enabled version of PyTorch:
+
+1. Visit the PyTorch Installation Page: [PyTorch's Official Installation Guide](https://pytorch.org/get-started/locally/)
+2. Configure the Installation Command:
+    - OS: Select your operating system (e.g., Linux, Windows, macOS).
+    - Package: Choose `Pip` as the package manager.
+    - Language: Set it to `Python`.
+    - Compute Platform: Select the CUDA version that matches your system (e.g., CUDA 11.8).
+  
+    The website will automatically generate the appropriate installation command.
+
+**3. Activate Your Virtual Environment**
+
+Ensure your virtual environment is activated:
+- **On Windows:**
+```bash
+venv\Scripts\activate
+```
+- **On macOS/Linux:**
+```bash
+source venv/bin/activate
+```
+
+**4. Install PyTorch with CUDA Support**
+
+Copy and run the command generated from the PyTorch website in your terminal. For example:
+```bash
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+```
+Replace the command with the one tailored to your specific setup.
+
+By following these steps, you will install PyTorch with CUDA support inside your virtual environment, enabling the AutoGate AI system to leverage CUDA acceleration for enhanced performance.
 
 ### Configure Environment Variables
 Before running the system, you must configure the environment variables. A template.env file is included in the project. Here’s how to set it up:
