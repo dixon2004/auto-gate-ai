@@ -1,5 +1,6 @@
 from src.utils.log import write_log
 from ultralytics import YOLO
+import torch
 
 
 class PredictDetectionModel:
@@ -10,6 +11,7 @@ class PredictDetectionModel:
         """
         self.best_model = YOLO(model)
         self.save = save
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
     def check_overlap(self, coordinate_1: dict, coordinate_2: dict) -> bool:
@@ -115,7 +117,7 @@ class PredictDetectionModel:
                                     source=src, 
                                     conf=0.25, 
                                     iou=0.7,
-                                    device="cpu",
+                                    device=self.device,
                                     save=self.save,
                                     save_txt=self.save,
                                     save_conf=self.save
